@@ -15,8 +15,8 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
+          host: 31.97.107.14
+          username: rsbaladhikahusada-perpus
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
