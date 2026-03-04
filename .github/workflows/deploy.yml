@@ -1,0 +1,27 @@
+name: Deploy to CloudPanel
+
+on:
+  push:
+    branches:
+      - main # Jalankan deploy saat push ke branch main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /home/${{ secrets.REMOTE_USER }}/htdocs/domain-anda.com
+            git pull origin main
+            # Tambahkan perintah tambahan jika diperlukan:
+            # composer install --no-dev
+            # php artisan migrate --force
