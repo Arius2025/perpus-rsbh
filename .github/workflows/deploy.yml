@@ -1,9 +1,9 @@
-name: Deploy to CloudPanel
+name: Deploy Perpus to CloudPanel
 
 on:
   push:
     branches:
-      - main # Jalankan deploy saat push ke branch main
+      - main
 
 jobs:
   deploy:
@@ -20,8 +20,27 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd /home/${{ secrets.REMOTE_USER }}/htdocs/domain-anda.com
-            git pull origin main
-            # Tambahkan perintah tambahan jika diperlukan:
-            # composer install --no-dev
-            # php artisan migrate --force
+            # 1. Masuk ke direktori project perpus
+            cd /home/rsbaladhikahusada-perpus/htdocs/perpus.rsbaladhikahusada.com
+
+            # 2. Update Source Code
+            git config --global --add safe.directory "*"
+            git fetch origin main
+            git reset --hard origin/main
+            
+            # PROTEKSI: Hapus file sampah tapi amankan .env
+            git clean -fd -e .env
+
+            # 3. Update Dependency (Laravel)
+            composer install --no-dev --optimize-autoloader
+
+            # 4. Update Database
+            php artisan migrate --force
+
+            # 5. Optimasi Cache
+            php artisan optimize:clear
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+
+            echo "Deployment Perpus Berhasil! 🚀"
