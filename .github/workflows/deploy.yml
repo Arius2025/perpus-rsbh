@@ -1,0 +1,46 @@
+name: Deploy Perpus to CloudPanel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 31.97.107.14
+          username: rsbaladhikahusada-perpus
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            # 1. Masuk ke direktori project perpus
+            cd /home/rsbaladhikahusada-perpus/htdocs/perpus.rsbaladhikahusada.com
+
+            # 2. Update Source Code
+            git config --global --add safe.directory "*"
+            git fetch origin main
+            git reset --hard origin/main
+            
+            # PROTEKSI: Hapus file sampah tapi amankan .env
+            git clean -fd -e .env
+
+            # 3. Update Dependency (Laravel)
+            composer install --no-dev --optimize-autoloader
+
+            # 4. Update Database
+            php artisan migrate --force
+
+            # 5. Optimasi Cache
+            php artisan optimize:clear
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+
+            echo "Deployment Perpus Berhasil! 🚀"
