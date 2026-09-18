@@ -25,6 +25,19 @@ class Book extends Model
         return $this->belongsTo(Category::class, 'category_id');
     }
 
+    public function getCoverUrlAttribute()
+    {
+        if (!empty($this->cover_image) && file_exists(public_path('uploads/books/' . $this->cover_image))) {
+            return asset('uploads/books/' . $this->cover_image);
+        }
+        return asset('images/default-cover.svg');
+    }
+
+    public function getHasCustomCoverAttribute()
+    {
+        return !empty($this->cover_image) && file_exists(public_path('uploads/books/' . $this->cover_image));
+    }
+
     public static $categories = [
         'Teknologi',
         'Sains',

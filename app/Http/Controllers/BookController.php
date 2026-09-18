@@ -14,7 +14,7 @@ class BookController extends Controller
     {
         $query = Book::where('is_active', true)->with('category_ref');
 
-        if ($request->has('search')) {
+        if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
@@ -22,15 +22,28 @@ class BookController extends Controller
             });
         }
 
-        if ($request->has('category') && $request->input('category') != 'All') {
+        if ($request->filled('category') && $request->input('category') !== 'All' && $request->input('category') !== 'Semua Koleksi') {
             $query->whereHas('category_ref', function($q) use ($request) {
                 $q->where('name', $request->input('category'));
             });
         }
 
-        $books = $query->latest()->paginate(12);
-        $categories = Category::where('is_active', true)->get();
-        return view('home', compact('books', 'categories'));
+        $sort = $request->input('sort', 'default');
+        if ($sort === 'az') {
+            $query->orderBy('title', 'asc');
+        } elseif ($sort === 'author') {
+            $query->orderBy('author', 'asc');
+        } else {
+            $query->latest();
+        }
+
+        $books = $query->paginate(12)->withQueryString();
+        $totalBooks = Book::where('is_active', true)->count();
+        $categories = Category::where('is_active', true)
+            ->withCount(['books' => fn($q) => $q->where('is_active', true)])
+            ->get();
+
+        return view('home', compact('books', 'categories', 'totalBooks', 'sort'));
     }
 
     public function show(Book $book)

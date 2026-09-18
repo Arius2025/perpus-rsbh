@@ -1,166 +1,257 @@
 @extends('layout')
 
-@section('title', $book->title . ' - PustakaDigital')
+@section('title', $book->title . ' · PustakaDigital')
 
 @section('styles')
 <style>
-    .book-detail-card {
-        background: var(--card-bg-light);
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-        border: 1px solid rgba(0,0,0,0.05);
-    }
+.detail-wrap {
+  padding: 40px 0 80px;
+  max-width: 900px;
+  margin: auto;
+}
+.back-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  margin-bottom: 24px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 14px;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+.back-link svg {
+  width: 16px;
+  height: 16px;
+}
 
-    body.dark-mode .book-detail-card {
-        background: var(--card-bg-dark);
-        border: 1px solid rgba(255,255,255,0.05);
-        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    }
+.detail-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 48px;
+  border-radius: var(--radius);
+}
 
-    .book-detail-cover {
-        width: 100%;
-        max-width: 350px;
-        border-radius: 12px;
-        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        margin: 0 auto;
-        display: block;
-    }
+.detail-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
 
-    .book-meta-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-        margin-top: 2rem;
-        padding-top: 2rem;
-        border-top: 1px dashed rgba(0,0,0,0.1);
-    }
-    
-    body.dark-mode .book-meta-grid {
-        border-top: 1px dashed rgba(255,255,255,0.1);
-    }
+.detail-cover-box {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.detail-cover-box img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 360/240;
+  object-fit: cover;
+}
+.detail-cover-box .default-cover {
+  object-fit: contain;
+  padding: 8px;
+}
 
-    .meta-item label {
-        display: block;
-        font-size: 0.85rem;
-        color: #6c757d;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-weight: 600;
-        margin-bottom: 0.25rem;
-    }
+.detail-info {
+  display: flex;
+  flex-direction: column;
+}
 
-    .meta-item span {
-        font-weight: 500;
-        font-size: 1.05rem;
-    }
+.detail-tag {
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
 
-    .btn-download-large {
-        padding: 1rem 2rem;
-        font-size: 1.1rem;
-        border-radius: 50px;
-        width: 100%;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        box-shadow: 0 10px 20px rgba(21, 115, 71, 0.3);
-    }
+.detail-title {
+  font-size: clamp(22px, 3vw, 30px);
+  line-height: 1.35;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 24px;
+  overflow-wrap: anywhere;
+  color: var(--text);
+}
 
-    .btn-download-large:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 15px 25px rgba(21, 115, 71, 0.4);
-    }
-    
-    .description-text {
-        line-height: 1.8;
-        font-size: 1.05rem;
-        color: #4a5568;
-    }
-    
-    body.dark-mode .description-text {
-        color: #e2e8f0;
-    }
+.detail-dl {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 14px 16px;
+  margin: 0 0 24px;
+  font-size: 14px;
+}
+.detail-dl dt {
+  color: var(--muted);
+  font-weight: 500;
+}
+.detail-dl dd {
+  margin: 0;
+  color: var(--text);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
 
+.detail-description {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.detail-description h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.detail-description p {
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 15px;
+  white-space: pre-line;
+}
+
+.actions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.btn-secondary-action {
+  min-height: 48px;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 1px solid var(--line);
+  color: var(--text);
+  background: var(--surface);
+  gap: 8px;
+}
+.btn-secondary-action:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.detail-note {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 20px 0 0;
+}
+
+@media (max-width: 768px) {
+  .detail-wrap { padding: 24px 0 48px; }
+  .detail-panel { padding: 24px 16px; }
+  .detail-grid { grid-template-columns: 1fr; gap: 24px; }
+  .detail-cover-box { max-width: 280px; margin: 0 auto; width: 100%; }
+  .detail-dl { grid-template-columns: 110px 1fr; gap: 10px; font-size: 13px; }
+  .actions-row { flex-direction: column; align-items: stretch; }
+  .actions-row .primary, .actions-row .btn-secondary-action { width: 100%; }
+}
 </style>
 @endsection
 
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-xl-10">
-        
-        <a href="{{ route('home') }}" class="btn btn-link text-decoration-none px-0 mb-4 text-muted fade-in-up">
-            <i class="bi bi-arrow-left"></i> Kembali ke Beranda
+<div class="wrap">
+    <div class="detail-wrap">
+        <a class="back-link" href="{{ route('home') }}#koleksi">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
+            Kembali ke koleksi
         </a>
 
-        <div class="book-detail-card fade-in-up" style="animation-delay: 0.1s;">
-            <div class="row g-0">
-                
-                <!-- Left Column: Cover & Download -->
-                <div class="col-md-5 col-lg-4 p-4 p-md-5 text-center" style="background: rgba(21,115,71,0.03);">
-                    @if($book->cover_image)
-                        <img src="{{ asset('uploads/books/' . $book->cover_image) }}" alt="Cover" class="book-detail-cover mb-4">
+        <article class="detail-panel">
+            <div class="detail-grid">
+                <!-- Book Cover Preview -->
+                <div class="detail-cover-box">
+                    @if($book->has_custom_cover)
+                        <img src="{{ $book->cover_url }}" alt="Sampul {{ $book->title }}">
                     @else
-                        <img src="{{ asset('images/buku.png') }}" alt="Default Cover" class="book-detail-cover mb-4" style="object-fit: contain; background: #f8fafc; padding: 2rem;">
+                        {{-- Automatic fallback to default-cover.svg if no custom cover is uploaded --}}
+                        <img class="default-cover" src="{{ $book->cover_url }}" alt="Sampul belum tersedia">
                     @endif
-                    
-                    @if($book->external_link)
-                        <a href="{{ route('books.view', $book->id) }}" target="_blank" class="btn btn-primary btn-download-large mt-2">
-                            <i class="bi bi-link-45deg fs-4 me-2 align-middle"></i> Buka Link Buku
+                </div>
+
+                <!-- Book Metadata Info -->
+                <div class="detail-info">
+                    <span class="detail-tag">{{ $book->category_ref->name ?? 'Kesehatan' }} / Detail koleksi</span>
+                    <h1 class="detail-title">{{ $book->title }}</h1>
+
+                    <dl class="detail-dl">
+                        <dt>Penulis</dt>
+                        <dd>{{ $book->author }}</dd>
+
+                        <dt>Kategori</dt>
+                        <dd>{{ $book->category_ref->name ?? 'Koleksi Umum' }}</dd>
+
+                        <dt>Penerbit</dt>
+                        <dd>{{ $book->publisher ?: 'RS TK. III Baladhika Husada' }}</dd>
+
+                        <dt>Perpustakaan</dt>
+                        <dd>RS TK. III Baladhika Husada Jember</dd>
+
+                        <dt>Tanggal rilis</dt>
+                        <dd>{{ $book->created_at ? $book->created_at->format('d F Y') : 'Tersedia' }}</dd>
+
+                        <dt>Total akses</dt>
+                        <dd>{{ $book->download_count }} kali diakses</dd>
+                    </dl>
+                </div>
+            </div>
+
+            @if($book->description)
+                <div class="detail-description">
+                    <h3>Ringkasan dan Sinopsis</h3>
+                    <p>{{ $book->description }}</p>
+                </div>
+            @endif
+
+            <div class="actions-row">
+                @if($book->external_link)
+                    <a class="primary" href="{{ route('books.view', $book->id) }}" target="_blank" rel="noopener">
+                        Buka sumber asli
+                        <svg aria-hidden="true"><use href="#arrow"/></svg>
+                    </a>
+                @else
+                    @if($book->pdf_file)
+                        <a class="primary" href="{{ route('books.view', $book->id) }}" target="_blank" rel="noopener">
+                            Baca sekarang
+                            <svg aria-hidden="true"><use href="#arrow"/></svg>
+                        </a>
+                        <a class="btn-secondary-action" href="{{ route('books.download', $book->id) }}">
+                            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m4-5 5 5 5-5m-5 5V3"/></svg>
+                            Unduh PDF
                         </a>
                     @else
-                        <div class="d-grid gap-2">
-                            <a href="{{ route('books.view', $book->id) }}" target="_blank" class="btn btn-primary btn-download-large mt-2">
-                                <i class="bi bi-eye-fill fs-4 me-2 align-middle"></i> Baca Sekarang
-                            </a>
-                            <a href="{{ route('books.download', $book->id) }}" class="btn btn-outline-primary mt-2">
-                                <i class="bi bi-cloud-arrow-down-fill me-2"></i> Unduh PDF
-                            </a>
-                        </div>
+                        <a class="primary" href="https://perpus.rsbaladhikahusada.com/books/{{ $book->id }}" target="_blank" rel="noopener">
+                            Buka sumber asli
+                            <svg aria-hidden="true"><use href="#arrow"/></svg>
+                        </a>
                     @endif
-                    
-                    <p class="text-muted small mt-3 mb-0">
-                        <i class="bi bi-info-circle"></i> Telah diunduh sebanyak {{ $book->download_count }} kali
-                    </p>
-                </div>
-
-                <!-- Right Column: Details -->
-                <div class="col-md-7 col-lg-8 p-4 p-md-5">
-                    <span class="badge bg-primary rounded-pill mb-3 px-3 py-2 bg-opacity-10 text-primary">{{ $book->category_ref->name ?? 'Tanpa Kategori' }}</span>
-                    
-                    <h1 class="fw-bold mb-3" style="font-size: 2.5rem; letter-spacing: -1px;">{{ $book->title }}</h1>
-                    
-                    <div class="d-flex align-items-center mb-4 text-muted">
-                        <i class="bi bi-pen fs-5 me-2"></i>
-                        <span class="fs-5">{{ $book->author }}</span>
-                    </div>
-
-                    <div class="mb-4">
-                        <h5 class="fw-bold mb-3">Sinopsis / Deskripsi</h5>
-                        <p class="description-text">{{ $book->description }}</p>
-                    </div>
-
-                    <div class="book-meta-grid">
-                        <div class="meta-item">
-                            <label>Penerbit</label>
-                            <span>{{ $book->publisher ?: 'Tidak diketahui' }}</span>
-                        </div>
-                        <div class="meta-item">
-                            <label>Tahun / Tanggal Upload</label>
-                            <span>{{ $book->created_at->format('d M Y') }}</span>
-                        </div>
-                        <div class="meta-item">
-                            <label>Kategori</label>
-                            <span>{{ $book->category_ref->name ?? 'Tanpa Kategori' }}</span>
-                        </div>
-                        <div class="meta-item">
-                            <label>Status</label>
-                            <span class="text-success"><i class="bi bi-check-circle-fill"></i> Tersedia</span>
-                        </div>
-                    </div>
-                </div>
-
+                @endif
             </div>
-        </div>
 
+            <p class="detail-note">Sumber koleksi dibuka di tab baru. Ketersediaan dokumen dan hak akses baca mengikuti ketentuan RS Baladhika Husada.</p>
+        </article>
     </div>
 </div>
 @endsection

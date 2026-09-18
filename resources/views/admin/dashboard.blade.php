@@ -190,11 +190,7 @@
                         <tr>
                             <td>{{ $books->firstItem() + $index }}</td>
                             <td>
-                                @if($book->cover_image)
-                                    <img src="{{ asset('uploads/books/' . $book->cover_image) }}" alt="Cover" class="book-thumbnail">
-                                @else
-                                    <img src="{{ asset('images/buku.png') }}" alt="Default Cover" class="book-thumbnail" style="object-fit: contain; background: #f8fafc; padding: 2px;">
-                                @endif
+                                <img src="{{ $book->cover_url }}" alt="Cover" class="book-thumbnail" style="{{ $book->has_custom_cover ? '' : 'object-fit: contain; background: var(--soft); padding: 2px;' }}">
                             </td>
                             <td>
                                 <div class="fw-bold text-truncate" style="max-width: 250px;">{{ $book->title }}</div>

@@ -1,504 +1,623 @@
 @extends('layout')
 
-@section('title', 'Beranda - PustakaDigital')
+@section('title', 'PustakaDigital · Baladhika Husada')
 
 @section('styles')
 <style>
-    /* Premium Design System */
-    :root {
-        --primary-teal: #0f766e;
-        --primary-emerald: #10b981;
-        --primary-light: #f0fdfa;
-        --text-main: #1e293b;
-        --text-muted: #64748b;
-        --hero-text: #020617; /* High contrast black */
-        --card-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
-        --glass-bg: rgba(255, 255, 255, 0.9);
-        --glass-border: rgba(255, 255, 255, 0.4);
-    }
+.intro {
+  padding: 56px 0 48px;
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.intro h1 {
+  font-size: var(--display);
+  letter-spacing: -2px;
+  font-weight: 800;
+  max-width: 650px;
+  color: var(--text);
+}
+.intro h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+.intro p {
+  color: var(--muted);
+  max-width: 520px;
+  margin-top: 24px;
+  font-size: 16px;
+}
+.intro-side {
+  border-left: 1px solid var(--line);
+  padding-left: 32px;
+  max-width: 360px;
+  justify-self: end;
+}
+.intro-side p {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text);
+}
+.intro-side .od-row {
+  margin-top: 24px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  gap: 12px;
+}
 
-    body.dark-mode {
-        --text-main: #f1f5f9;
-        --text-muted: #94a3b8;
-        --hero-text: #f8fafc; /* Keep light in dark mode for standard accessibility */
-        --card-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        --glass-bg: rgba(15, 23, 42, 0.75);
-        --glass-border: rgba(255, 255, 255, 0.1);
-    }
+/* Search Panel */
+.search-panel {
+  background: var(--hero);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  color: var(--hero-text);
+  margin-bottom: 8px;
+}
+.search-panel label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 12px;
+  font-size: 20px;
+  color: var(--hero-text);
+}
+.search-box {
+  display: flex;
+  gap: 8px;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 8px;
+  align-items: center;
+  color: #172c32;
+}
+.search-box svg {
+  margin-left: 16px;
+  color: #52636b;
+}
+.search-box input {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  padding: 12px;
+  background: #ffffff;
+  color: #172c32;
+  font-size: 15px;
+  outline: none;
+}
+.search-box input:focus {
+  outline: none;
+}
+.suggestions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  color: #c7e1db;
+  font-size: 12px;
+}
+.suggestion-btn {
+  color: #ffffff;
+  padding: 4px 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-size: 12px;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  transition: opacity var(--motion) ease;
+}
+.suggestion-btn:hover {
+  color: #ffffff;
+  opacity: 0.85;
+}
 
-    /* Floating Card Hero */
-    .hero-container {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        margin-bottom: 3.5rem;
-    }
+/* Catalog */
+.catalog {
+  padding: 48px 0 64px;
+}
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.section-heading h2 {
+  font-size: var(--h2);
+  letter-spacing: -1px;
+  font-weight: 700;
+  color: var(--text);
+}
+.section-heading p {
+  color: var(--muted);
+  margin-top: 8px;
+  font-size: 14px;
+}
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 208px minmax(0, 1fr);
+  gap: 40px;
+}
+.filters {
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+}
+.filters h3 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.mobile-category {
+  display: none;
+}
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cat-btn {
+  display: flex;
+  text-align: left;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 44px;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: var(--text);
+  text-decoration: none;
+  background: transparent;
+  transition: background-color var(--motion) ease, color var(--motion) ease;
+}
+.cat-btn:hover {
+  background: var(--soft);
+  color: var(--accent);
+}
+.cat-btn.selected {
+  background: var(--soft);
+  color: var(--accent);
+  font-weight: 700;
+}
+.cat-btn small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.cat-btn.selected small {
+  color: var(--accent);
+  font-weight: 700;
+}
+.aside-note {
+  margin-top: 32px;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.aside-note svg {
+  margin-bottom: 8px;
+  color: var(--accent);
+}
 
-    .hero-section {
-        max-width: 1050px;
-        width: 100%;
-        /* Light premium background to support black text */
-        background: linear-gradient(135deg, #f0fdfa 0%, #e2e8f0 100%);
-        background-image: 
-            radial-gradient(at 0% 0%, rgba(20, 184, 166, 0.15) 0px, transparent 50%),
-            radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
-        border-radius: 32px;
-        padding: 3rem 3.5rem;
-        color: var(--hero-text);
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 30px 60px -15px rgba(15, 118, 110, 0.15);
-        border: 1px solid rgba(15, 118, 110, 0.1);
-    }
+/* Results Top Bar */
+.results-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.results-top select {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 12px;
+  min-height: 44px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.results-top label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-    body.dark-mode .hero-section {
-        background: linear-gradient(135deg, #042f2e 0%, #064e3b 100%);
-        background-image: 
-            radial-gradient(at 0% 0%, rgba(20, 184, 166, 0.2) 0px, transparent 50%),
-            radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
-        box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.5);
-        border-color: rgba(255, 255, 255, 0.05);
-        color: white; /* Switch back to white in dark mode for proper UX */
-    }
+/* Books Grid */
+.books {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.book {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  transition: border-color var(--motion) ease;
+}
+.book:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+.book:hover .book-foot span {
+  text-decoration: underline;
+}
 
-    /* If user strictly wanted black text even in dark mode, we would need a light card in dark mode. 
-       But usually, "tulisan terang jadi hitam" implies the light mode state. 
-       I will use dark charcoal for better visibility in light mode. */
+.cover-frame {
+  display: grid;
+  align-items: center;
+  background: var(--soft);
+  border-radius: 7px 7px 0 0;
+  overflow: hidden;
+  position: relative;
+}
+.default-cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 360/240;
+  object-fit: contain;
+}
+.book-cover-img {
+  display: block;
+  width: 100%;
+  height: 200px;
+  aspect-ratio: 360/240;
+  object-fit: cover;
+}
+.book-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 20px;
+  gap: 12px;
+}
+.tag {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+.book h3 {
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+.author {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: auto;
+}
+.book-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 600;
+}
+.book-foot svg {
+  width: 16px;
+  height: 16px;
+}
 
-    @media (max-width: 991.98px) {
-        .hero-section { padding: 2.5rem 2rem; border-radius: 24px; }
-    }
+/* Empty State */
+.empty {
+  padding: 64px 24px;
+  text-align: center;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  grid-column: 1 / -1;
+  background: var(--surface);
+}
+.empty h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.empty p {
+  margin: 8px 0 24px;
+  color: var(--muted);
+  font-size: 14px;
+}
 
-    .hero-content { position: relative; z-index: 5; }
+/* Pagination Styling */
+.catalog-pagination {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+.catalog-pagination .pagination {
+  gap: 4px;
+  margin: 0;
+}
+.catalog-pagination .page-link {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px !important;
+  min-width: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+.catalog-pagination .page-item.active .page-link {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+.catalog-pagination .page-link:hover {
+  background: var(--soft);
+  color: var(--accent);
+  border-color: var(--accent);
+}
 
-    .hero-badge {
-        background: rgba(15, 118, 110, 0.05);
-        padding: 6px 14px;
-        border-radius: 100px;
-        font-size: 0.7rem;
-        font-weight: 800;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        border: 1px solid rgba(15, 118, 110, 0.2);
-        margin-bottom: 1.25rem;
-        display: inline-block;
-        color: var(--primary-teal);
-    }
+/* Responsive Rules */
+@media (max-width: 1024px) {
+  .intro { gap: 32px; }
+  .catalog-layout { grid-template-columns: 168px 1fr; gap: 24px; }
+  .books { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
-    body.dark-mode .hero-badge {
-        background: rgba(255, 255, 255, 0.1);
-        color: #ccfbf1;
-        border-color: rgba(255, 255, 255, 0.15);
-    }
+@media (max-width: 768px) {
+  .intro {
+    grid-template-columns: 1fr;
+    padding: 24px 0 20px;
+    gap: 20px;
+  }
+  .intro-side { display: none; }
+  .eyebrow { font-size: 11px; margin-bottom: 8px; }
+  .intro h1 { font-size: 28px; letter-spacing: -1px; line-height: 1.25; }
+  .intro p { font-size: 15px; margin-top: 12px; line-height: 1.5; }
 
-    .hero-title {
-        font-size: 2.75rem;
-        font-weight: 900;
-        line-height: 1.15;
-        margin-bottom: 1.5rem;
-        color: var(--hero-text);
-        letter-spacing: -1.5px;
-    }
+  .search-panel { padding: 16px; }
+  .search-panel label { font-size: 16px; margin-bottom: 8px; }
+  .search-box { flex-wrap: nowrap; padding: 4px; gap: 4px; }
+  .search-box svg { width: 20px; margin-left: 8px; }
+  .search-box input { font-size: 16px; padding: 10px 4px; }
+  .search-box .primary { min-height: 44px; padding: 10px 16px; font-size: 14px; }
+  .suggestions { gap: 8px; margin-top: 8px; }
+  .suggestions > span { display: none; }
+  .suggestion-btn { font-size: 12px; min-height: 44px; padding: 8px; }
 
-    @media (max-width: 991.98px) {
-        .hero-title { font-size: 2.25rem; }
-    }
+  .catalog { padding: 24px 0 32px; }
+  .section-heading { margin-bottom: 12px; }
+  .section-heading h2 { font-size: 24px; }
+  .section-heading p { display: none; }
 
-    /* Modern Category Pill Filters */
-    .filter-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        margin-bottom: 2.5rem;
-    }
+  .filters { border: 0; padding: 0; }
+  .category-list, .aside-note { display: none; }
+  .mobile-category { display: grid; gap: 8px; font-size: 14px; margin-bottom: 16px; }
+  .mobile-category select {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+  }
+  .catalog-layout { display: flex; flex-direction: column; gap: 16px; }
+  .results-top { padding: 8px 0; margin-bottom: 12px; }
 
-    .btn-filter {
-        border: none;
-        background: #f1f5f9;
-        color: var(--text-muted);
-        padding: 0.6rem 1.75rem;
-        border-radius: 100px;
-        font-size: 0.85rem;
-        font-weight: 700;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    body.dark-mode .btn-filter {
-        background: rgba(255, 255, 255, 0.05);
-        color: #94a3b8;
-    }
-
-    .btn-filter:hover {
-        background: #e2e8f0;
-        color: var(--primary-teal);
-        transform: translateY(-2px);
-    }
-
-    body.dark-mode .btn-filter:hover {
-        background: rgba(255, 255, 255, 0.1);
-        color: #2dd4bf;
-    }
-
-    .btn-filter.active {
-        background: var(--primary-teal);
-        color: #ffffff !important;
-        box-shadow: 0 10px 20px -5px rgba(15, 118, 110, 0.4);
-    }
-
-    body.dark-mode .btn-filter.active {
-        background: #2dd4bf;
-        color: #042f2e !important;
-        box-shadow: 0 10px 20px -5px rgba(45, 212, 191, 0.3);
-    }
-
-    /* Premium Search Bar */
-    .search-box-premium {
-        background: #ffffff;
-        padding: 6px;
-        border-radius: 20px;
-        border: 1px solid #e2e8f0;
-        display: flex;
-        align-items: center;
-        max-width: 580px;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-        transition: all 0.3s ease;
-    }
-
-    body.dark-mode .search-box-premium {
-        background: var(--glass-bg);
-        border-color: var(--glass-border);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-    }
-
-    .search-box-premium:focus-within {
-        border-color: var(--primary-teal);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    }
-
-    .search-box-premium input {
-        border: none;
-        background: transparent;
-        color: var(--text-main);
-        font-size: 0.95rem;
-        font-weight: 500;
-        padding: 10px 15px;
-        width: 100%;
-        outline: none;
-    }
-
-    .search-btn-premium {
-        background: var(--primary-teal);
-        color: #ffffff;
-        border: none;
-        padding: 10px 24px;
-        border-radius: 14px;
-        font-weight: 700;
-        transition: all 0.3s ease;
-    }
-
-    body.dark-mode .search-btn-premium {
-        background: #2dd4bf;
-        color: #042f2e;
-    }
-
-    /* Popular Tags - Hero Section */
-    .hero-tags {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 1.5rem;
-        flex-wrap: wrap;
-    }
-
-    .tag-label-hero {
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: var(--hero-text);
-        opacity: 0.7;
-    }
-
-    .tag-premium {
-        background: rgba(15, 118, 110, 0.05);
-        color: var(--hero-text);
-        text-decoration: none;
-        font-size: 0.75rem;
-        font-weight: 700;
-        padding: 5px 14px;
-        border-radius: 100px;
-        border: 1px solid rgba(15, 118, 110, 0.15);
-        transition: all 0.3s ease;
-    }
-
-    body.dark-mode .tag-premium {
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .tag-premium:hover {
-        background: var(--primary-teal);
-        color: white;
-        transform: translateY(-2px);
-    }
-
-    /* Book Cards */
-    .book-card {
-        border-radius: 20px;
-        background: #ffffff;
-        border: 1px solid #f1f5f9;
-        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-        overflow: hidden;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        box-shadow: var(--card-shadow);
-    }
-
-    body.dark-mode .book-card {
-        background: #1e293b;
-        border-color: rgba(255, 255, 255, 0.05);
-    }
-
-    .book-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 30px 60px -15px rgba(0,0,0,0.15);
-        border-color: var(--primary-teal);
-    }
-
-    body.dark-mode .book-card:hover {
-        box-shadow: 0 30px 60px -15px rgba(0,0,0,0.5);
-        border-color: #2dd4bf;
-    }
-
-    .book-cover-wrapper {
-        padding-top: 140%;
-        position: relative;
-        overflow: hidden;
-        background: #f8fafc;
-    }
-
-    body.dark-mode .book-cover-wrapper { background: #0f172a; }
-
-    .book-cover {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-
-    .book-card:hover .book-cover { transform: scale(1.1); }
-
-    .book-info { padding: 1.25rem; flex-grow: 1; display: flex; flex-direction: column; }
-
-    .book-title {
-        font-weight: 800;
-        font-size: 1rem;
-        margin-bottom: 0.4rem;
-        color: var(--text-main);
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .book-author {
-        color: var(--text-muted);
-        font-size: 0.8rem;
-        font-weight: 500;
-        margin-bottom: 1.25rem;
-    }
-
-    .category-badge {
-        background: rgba(15, 118, 110, 0.08);
-        color: var(--primary-teal);
-        padding: 4px 10px;
-        border-radius: 6px;
-        font-weight: 800;
-        font-size: 0.6rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    body.dark-mode .category-badge {
-        background: rgba(45, 212, 191, 0.1);
-        color: #2dd4bf;
-    }
-
-    /* Premium Empty State */
-    .empty-state-card {
-        max-width: 580px;
-        margin: 2rem auto;
-        padding: 4rem 3rem;
-        background: #ffffff;
-        border: 1px solid #f1f5f9;
-        border-radius: 32px;
-        box-shadow: var(--card-shadow);
-        text-align: center;
-    }
-
-    body.dark-mode .empty-state-card {
-        background: #1e293b;
-        border-color: rgba(255, 255, 255, 0.05);
-    }
-
-    .empty-state-icon { font-size: 4.5rem; color: var(--primary-teal); opacity: 0.8; margin-bottom: 2rem; }
-    body.dark-mode .empty-state-icon { color: #2dd4bf; }
-
-    .empty-state-title { font-weight: 800; font-size: 1.75rem; color: var(--text-main); margin-bottom: 1rem; }
-    .empty-state-text { color: var(--text-muted); font-size: 1rem; line-height: 1.6; margin-bottom: 2.5rem; }
-
-    /* Animations */
-    .reveal-item {
-        opacity: 0;
-        transform: translateY(20px);
-        animation: reveal 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-    }
-
-    @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
-
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.2s; }
-    .delay-3 { animation-delay: 0.3s; }
-    .delay-4 { animation-delay: 0.4s; }
-
-    .hero-logo-main {
-        max-height: 260px;
-        filter: drop-shadow(0 20px 40px rgba(0,0,0,0.1));
-        animation: float-logo 6s ease-in-out infinite;
-    }
-
-    @keyframes float-logo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-
+  .books { grid-template-columns: 1fr; gap: 12px; }
+  .book {
+    display: grid;
+    grid-template-columns: 100px minmax(0, 1fr);
+    align-items: stretch;
+  }
+  .cover-frame {
+    border-radius: 7px 0 0 7px;
+    height: 100%;
+  }
+  .default-cover, .book-cover-img {
+    height: 100%;
+    object-fit: cover;
+  }
+  .book-body { padding: 12px; gap: 8px; }
+  .book h3 { font-size: 15px; line-height: 1.4; }
+  .author { font-size: 12px; }
+  .book-foot { padding-top: 8px; margin-top: 0; }
+  .tag { font-size: 10px; }
+}
 </style>
 @endsection
 
 @section('content')
+<div class="wrap">
+    <!-- Hero Intro -->
+    <section class="intro">
+        <div>
+            <div class="eyebrow">Perpustakaan Digital</div>
+            <h1>Ruang pengetahuan.<br><em>Untuk terus bertumbuh.</em></h1>
+            <p>Temukan referensi, penelitian, dan pengetahuan kesehatan dalam satu ruang yang mudah dijangkau.</p>
+        </div>
+        <div class="intro-side">
+            <p>Setiap referensi membuka sudut pandang baru. Mulai perjalanan belajar Anda dari sini.</p>
+            <div class="od-row">
+                <svg aria-hidden="true"><use href="#book"/></svg>
+                <span>Pustaka RS Baladhika Husada</span>
+            </div>
+        </div>
+    </section>
 
-<!-- Hero Section - Premium Floating Card -->
-<div class="hero-container">
-    <div class="hero-section reveal-item">
-        <div class="row align-items-center hero-content">
-            <div class="col-lg-7 text-center text-lg-start">
-                <span class="hero-badge reveal-item delay-1">Digital Library</span>
-                <h1 class="hero-title reveal-item delay-2">Eksplorasi Literasi<br>Tanpa Batas</h1>
-                
-                <!-- Premium Search -->
-                <form action="{{ route('home') }}" method="GET" class="search-box-premium reveal-item delay-3 mx-auto mx-lg-0">
-                    <i class="bi bi-search text-muted ms-3"></i>
-                    <input type="text" name="search" placeholder="Cari judul buku, penulis, atau topik..." value="{{ request('search') }}">
-                    <button type="submit" class="search-btn-premium d-none d-sm-block">Cari Koleksi</button>
-                    <button type="submit" class="btn btn-primary d-sm-none rounded-pill px-3"><i class="bi bi-search"></i></button>
-                </form>
+    <!-- Search Panel -->
+    <section id="pencarian" class="search-panel" aria-label="Pencarian koleksi">
+        <form id="search-form" action="{{ route('home') }}#koleksi" method="GET">
+            <label for="query">Apa yang ingin Anda pelajari hari ini?</label>
+            <div class="search-box">
+                <svg aria-hidden="true"><use href="#search"/></svg>
+                <input id="query" name="search" type="search" placeholder="Cari judul atau nama penulis…" value="{{ request('search') }}" autocomplete="off">
+                @if(request('category'))
+                    <input type="hidden" name="category" value="{{ request('category') }}">
+                @endif
+                @if(request('sort'))
+                    <input type="hidden" name="sort" value="{{ request('sort') }}">
+                @endif
+                <button class="primary" type="submit">Cari</button>
+            </div>
+        </form>
+        <div class="suggestions">
+            <span>Topik penelusuran:</span>
+            <a href="{{ route('home', array_merge(request()->except(['search', 'page']), ['search' => 'Rekam medis'])) }}#koleksi" class="suggestion-btn">Rekam medis</a>
+            <a href="{{ route('home', array_merge(request()->except(['search', 'page']), ['search' => 'SIMRS'])) }}#koleksi" class="suggestion-btn">SIMRS</a>
+            <a href="{{ route('home', array_merge(request()->except(['search', 'page']), ['search' => 'BPJS'])) }}#koleksi" class="suggestion-btn">BPJS</a>
+        </div>
+    </section>
 
-                <!-- Premium Tags -->
-                <div class="hero-tags reveal-item delay-4">
-                    <span class="tag-label-hero me-2">Populer:</span>
-                    @foreach($categories->take(3) as $cat)
-                        <a href="{{ route('home', ['category' => $cat->name]) }}" class="tag-premium">{{ $cat->name }}</a>
+    <!-- Catalog Section -->
+    <section id="koleksi" class="catalog">
+        <div class="section-heading">
+            <div>
+                <h2>Jelajahi koleksi</h2>
+                <p>Referensi untuk mendukung pengetahuan dan praktik Anda.</p>
+            </div>
+        </div>
+
+        <div class="catalog-layout">
+            <!-- Sidebar Filter -->
+            <aside class="filters">
+                <h3>Kategori pustaka</h3>
+
+                <!-- Mobile Category Dropdown -->
+                <div class="mobile-category">
+                    <label for="mobile-category" class="visually-hidden">Kategori pustaka</label>
+                    <select id="mobile-category" onchange="if(this.value) window.location.href=this.value;">
+                        <option value="{{ route('home', array_merge(request()->except(['category', 'page']), ['category' => 'All'])) }}#koleksi" {{ request('category', 'All') == 'All' ? 'selected' : '' }}>
+                            Semua Koleksi ({{ $totalBooks }})
+                        </option>
+                        @foreach($categories as $cat)
+                            <option value="{{ route('home', array_merge(request()->except(['category', 'page']), ['category' => $cat->name])) }}#koleksi" {{ request('category') == $cat->name ? 'selected' : '' }}>
+                                {{ $cat->name }} ({{ $cat->books_count }})
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Desktop Category List -->
+                <div class="category-list" aria-label="Filter kategori">
+                    <a href="{{ route('home', array_merge(request()->except(['category', 'page']), ['category' => 'All'])) }}#koleksi" 
+                       class="cat-btn {{ request('category', 'All') == 'All' ? 'selected' : '' }}" 
+                       aria-pressed="{{ request('category', 'All') == 'All' ? 'true' : 'false' }}">
+                        <span>Semua Koleksi</span>
+                        <small>{{ $totalBooks }}</small>
+                    </a>
+                    @foreach($categories as $cat)
+                        <a href="{{ route('home', array_merge(request()->except(['category', 'page']), ['category' => $cat->name])) }}#koleksi" 
+                           class="cat-btn {{ request('category') == $cat->name ? 'selected' : '' }}" 
+                           aria-pressed="{{ request('category') == $cat->name ? 'true' : 'false' }}">
+                            <span>{{ $cat->name }}</span>
+                            <small>{{ $cat->books_count }}</small>
+                        </a>
                     @endforeach
                 </div>
-            </div>
-            <div class="col-lg-5 d-none d-lg-block text-end">
-                <div class="hero-logo-container reveal-item delay-2">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="hero-logo-main">
+
+                <div class="aside-note">
+                    <svg aria-hidden="true"><use href="#book"/></svg>
+                    <p>Temukan judul yang relevan, lalu buka detail untuk mengakses sumber koleksi.</p>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+            </aside>
 
-<!-- Main Content Area -->
-<div class="container pb-5 reveal-item" style="animation-delay: 0.5s;">
-    
-    <div class="d-flex justify-content-between align-items-end mb-4">
-        <h3 class="fw-bold mb-0">Rekomendasi Buku</h3>
-    </div>
+            <!-- Results Section -->
+            <div>
+                <div class="results-top">
+                    <span id="result-count" aria-live="polite">
+                        {{ $books->total() }} koleksi {{ request('search') ? 'untuk “' . request('search') . '”' : 'tersedia' }}
+                    </span>
 
-    <!-- Category Filter -->
-    <div class="filter-container mb-4">
-        <a href="{{ route('home', array_merge(request()->query(), ['category' => 'All'])) }}" class="btn btn-filter {{ request('category', 'All') == 'All' ? 'active' : '' }}">Semua Koleksi</a>
-        @foreach($categories as $category)
-            <a href="{{ route('home', array_merge(request()->query(), ['category' => $category->name])) }}" class="btn btn-filter {{ request('category') == $category->name ? 'active' : '' }} text-capitalize">{{ $category->name }}</a>
-        @endforeach
-    </div>
-
-    @if(request('search'))
-        <div class="mb-5 d-flex justify-content-between align-items-center w-100 p-4 search-alert shadow-sm reveal-item">
-            <div class="d-flex align-items-center">
-                <div class="bg-primary bg-opacity-10 p-2 rounded-circle me-3">
-                    <i class="bi bi-search text-primary"></i>
+                    <form id="sort-form" method="GET" action="{{ route('home') }}#koleksi">
+                        @if(request('search'))
+                            <input type="hidden" name="search" value="{{ request('search') }}">
+                        @endif
+                        @if(request('category'))
+                            <input type="hidden" name="category" value="{{ request('category') }}">
+                        @endif
+                        <label>
+                            <span>Urutkan</span>
+                            <select id="sort" name="sort" onchange="this.form.submit()" aria-label="Urutkan koleksi">
+                                <option value="default" {{ request('sort', 'default') == 'default' ? 'selected' : '' }}>Urutan koleksi</option>
+                                <option value="az" {{ request('sort') == 'az' ? 'selected' : '' }}>Judul A-Z</option>
+                                <option value="author" {{ request('sort') == 'author' ? 'selected' : '' }}>Nama penulis</option>
+                            </select>
+                        </label>
+                    </form>
                 </div>
-                <span>Hasil pencarian untuk: <strong class="text-primary">"{{ request('search') }}"</strong></span>
-            </div>
-            <a href="{{ route('home') }}" class="btn btn-sm btn-outline-danger px-3 rounded-pill">Hapus Pencarian</a>
-        </div>
-    @endif
 
-    @if($books->count() > 0)
-        <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
-            @foreach($books as $book)
-                <div class="col reveal-item" style="animation-delay: {{ 0.2 + (0.05 * $loop->index) }}s;">
-                    <a href="{{ route('books.show', $book->id) }}" class="book-card text-decoration-none">
-                        <div class="book-cover-wrapper">
-                            @if($book->cover_image)
-                                <img src="{{ asset('uploads/books/' . $book->cover_image) }}" class="book-cover" alt="Cover {{ $book->title }}">
-                            @else
-                                <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light">
-                                    <i class="bi bi-book text-muted opacity-25" style="font-size: 4rem;"></i>
+                @if($books->count() > 0)
+                    <div id="books" class="books">
+                        @foreach($books as $book)
+                            <a class="book" href="{{ route('books.show', $book->id) }}" aria-label="Baca detail: {{ $book->title }}">
+                                <div class="cover-frame">
+                                    @if($book->has_custom_cover)
+                                        <img class="od-media book-cover-img" src="{{ $book->cover_url }}" alt="Sampul {{ $book->title }}" loading="lazy">
+                                    @else
+                                        {{-- Automatic fallback to default-cover.svg if no custom cover is uploaded --}}
+                                        <img class="od-media default-cover" src="{{ $book->cover_url }}" alt="Sampul belum tersedia" loading="lazy">
+                                    @endif
                                 </div>
-                            @endif
-                        </div>
-                        
-                        <div class="book-info">
-                            <div class="mb-2">
-                                <span class="category-badge">{{ $book->category_ref->name ?? 'Koleksi' }}</span>
-                            </div>
-                            <h5 class="book-title">{{ $book->title }}</h5>
-                            <p class="book-author"><i class="bi bi-person me-1"></i> {{ $book->author }}</p>
-                            
-                            <div class="mt-auto pt-3 border-top border-light d-flex justify-content-between align-items-center" style="border-color: rgba(0,0,0,0.05) !important;">
-                                <span class="text-primary small fw-bold">Detail</span>
-                                <span class="text-muted small"><i class="bi bi-download me-1"></i> {{ $book->download_count }}</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            @endforeach
-        </div>
+                                <div class="book-body">
+                                    <span class="tag">{{ $book->category_ref->name ?? 'Kesehatan' }}</span>
+                                    <h3 class="od-clamp-3">{{ Str::title($book->title) }}</h3>
+                                    <p class="author">{{ $book->author }}</p>
+                                    <div class="book-foot">
+                                        <span>Baca detail</span>
+                                        <svg aria-hidden="true"><use href="#arrow"/></svg>
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
 
-        <!-- Pagination -->
-        <div class="d-flex justify-content-center mt-4">
-            {{ $books->appends(request()->query())->links('pagination::bootstrap-5') }}
-        </div>
-    @else
-        <!-- Premium Empty State -->
-        <div class="empty-state-container reveal-item">
-            <div class="empty-state-card">
-                <div class="empty-state-icon-wrapper">
-                    <div class="empty-state-glow"></div>
-                    <i class="bi bi-journal-x empty-state-icon"></i>
-                </div>
-                <h2 class="empty-state-title">Koleksi Belum Tersedia</h2>
-                <p class="empty-state-text">
-                    Maaf, kami tidak dapat menemukan buku yang Anda cari.<br>
-                    Coba gunakan kata kunci lain atau telusuri kategori yang tersedia untuk menemukan literatur menarik lainnya.
-                </p>
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="{{ route('home') }}" class="btn btn-primary px-4 py-2 rounded-pill shadow">Segarkan Halaman</a>
-                    @if(request('search'))
-                        <a href="{{ route('home') }}" class="btn btn-outline-secondary px-4 py-2 rounded-pill">Reset Pencarian</a>
+                    @if($books->hasPages())
+                        <div class="catalog-pagination">
+                            {{ $books->links('pagination::bootstrap-5') }}
+                        </div>
                     @endif
-                </div>
+                @else
+                    <div class="empty">
+                        <h3>Koleksi belum ditemukan</h3>
+                        <p>Coba judul atau penulis lain, atau tampilkan kembali semua koleksi.</p>
+                        <a href="{{ route('home') }}#koleksi" class="primary">Tampilkan semua</a>
+                    </div>
+                @endif
             </div>
         </div>
-    @endif
-
-</div>
-
+    </section>
 </div>
 @endsection
