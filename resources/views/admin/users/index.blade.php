@@ -1,21 +1,54 @@
 @extends('layout')
 
-@section('title', 'Manajemen Akun - PustakaDigital')
+@section('styles')
+<style>
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+    }
+    .status-badge.active {
+        background: #ecfdf5;
+        color: #065f46;
+        border: 1px solid #a7f3d0;
+    }
+    .status-badge.inactive {
+        background: #fef2f2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+    }
+    :root[data-theme="dark"] .status-badge.active {
+        background: #064e3b;
+        color: #6ee7b7;
+        border-color: #047857;
+    }
+    :root[data-theme="dark"] .status-badge.inactive {
+        background: #7f1d1d;
+        color: #fca5a5;
+        border-color: #991b1b;
+    }
+</style>
+@endsection
 
 @section('content')
 <div class="container-fluid pb-5">
-    <div class="d-flex justify-content-between align-items-center mb-4 fade-in-up">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <div>
             <h2 class="fw-bold mb-0">Manajemen Akun</h2>
             <p class="text-muted mb-0">Kelola akses admin dan pengaturan akun perpustakaan.</p>
         </div>
-        <button class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addUserModal">
+        <button class="primary" style="min-height: 44px; padding: 10px 20px;" data-bs-toggle="modal" data-bs-target="#addUserModal">
             <i class="bi bi-person-plus-fill me-2"></i> Tambah Admin Baru
         </button>
     </div>
 
     @if($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 8px;">
             <ul class="mb-0">
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -26,11 +59,11 @@
     @endif
 
     <!-- Desktop Table View -->
-    <div class="card border-0 shadow-sm d-none d-lg-block fade-in-up" style="border-radius: 16px; animation-delay: 0.1s;">
+    <div class="card border shadow-sm d-none d-lg-block mb-4" style="border-radius: var(--radius); background: var(--surface); border-color: var(--line) !important;">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
-                    <thead class="bg-light">
+                    <thead>
                         <tr>
                             <th class="ps-4" width="5%">No</th>
                             <th width="30%">Nama & Email</th>
@@ -50,14 +83,14 @@
                             <td>{{ $user->created_at->format('d M Y, H:i') }}</td>
                             <td class="text-center">
                                 @if($user->is_active)
-                                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-2">Aktif</span>
+                                    <span class="status-badge active">Aktif</span>
                                 @else
-                                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3 py-2">Nonaktif</span>
+                                    <span class="status-badge inactive">Nonaktif</span>
                                 @endif
                             </td>
                             <td class="text-center pe-4">
                                 <div class="d-flex justify-content-center gap-2">
-                                    <button class="btn btn-sm btn-outline-primary rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#editUserModal{{ $user->id }}">
+                                    <button class="btn btn-sm btn-outline-primary px-3" style="border-radius: 6px;" data-bs-toggle="modal" data-bs-target="#editUserModal{{ $user->id }}">
                                         <i class="bi bi-pencil-square me-1"></i> Edit
                                     </button>
                                     
@@ -65,7 +98,7 @@
                                         <form action="{{ route('admin.users.toggle', $user->id) }}" method="POST">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" class="btn btn-sm {{ $user->is_active ? 'btn-outline-danger' : 'btn-outline-success' }} rounded-pill px-3">
+                                            <button type="submit" class="btn btn-sm {{ $user->is_active ? 'btn-outline-danger' : 'btn-outline-success' }} px-3" style="border-radius: 6px;">
                                                 <i class="bi {{ $user->is_active ? 'bi-person-x-fill' : 'bi-person-check-fill' }} me-1"></i>
                                                 {{ $user->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
                                             </button>
@@ -97,9 +130,9 @@
                             </div>
                         </div>
                         @if($user->is_active)
-                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2" style="font-size: 0.7rem;">Aktif</span>
+                            <span class="status-badge active">Aktif</span>
                         @else
-                            <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3 py-2" style="font-size: 0.7rem;">Nonaktif</span>
+                            <span class="status-badge inactive">Nonaktif</span>
                         @endif
                     </div>
                     
@@ -108,7 +141,7 @@
                     </div>
                     
                     <div class="d-flex gap-2">
-                        <button class="btn btn-primary flex-grow-1 rounded-pill" data-bs-toggle="modal" data-bs-target="#editUserModal{{ $user->id }}">
+                        <button class="btn btn-outline-primary flex-grow-1" style="border-radius: 6px;" data-bs-toggle="modal" data-bs-target="#editUserModal{{ $user->id }}">
                             <i class="bi bi-pencil-square me-1"></i> Edit
                         </button>
                         
@@ -116,7 +149,7 @@
                             <form action="{{ route('admin.users.toggle', $user->id) }}" method="POST" class="flex-grow-1">
                                 @csrf
                                 @method('PATCH')
-                                <button type="submit" class="btn {{ $user->is_active ? 'btn-outline-danger' : 'btn-outline-success' }} w-100 rounded-pill">
+                                <button type="submit" class="btn {{ $user->is_active ? 'btn-outline-danger' : 'btn-outline-success' }} w-100" style="border-radius: 6px;">
                                     <i class="bi {{ $user->is_active ? 'bi-person-x-fill' : 'bi-person-check-fill' }} me-1"></i>
                                     {{ $user->is_active ? 'Matikan' : 'Aktifkan' }}
                                 </button>

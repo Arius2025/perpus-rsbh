@@ -6,18 +6,11 @@
 <style>
     /* Reuse styles from create.blade.php */
     .form-container {
-        background: var(--card-bg-light);
-        border-radius: 20px;
-        padding: 2.5rem;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-        border: 1px solid rgba(0,0,0,0.05);
+        background: var(--surface);
+        border-radius: var(--radius);
+        padding: 36px;
+        border: 1px solid var(--line);
         margin-bottom: 2rem;
-    }
-    
-    body.dark-mode .form-container {
-        background: var(--card-bg-dark);
-        border: 1px solid rgba(255,255,255,0.05);
-        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     }
 
     .form-label {

@@ -4,169 +4,166 @@
 
 @section('styles')
 <style>
-    .dashboard-header {
-        background: linear-gradient(135deg, var(--bs-primary) 0%, #115e59 100%);
-        border-radius: 20px;
-        padding: 2.5rem;
-        color: white;
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 30px rgba(15, 118, 110, 0.2);
+    .dashboard-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 20px;
+        margin-bottom: 28px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--line);
+        flex-wrap: wrap;
     }
-    
-    .table-responsive {
-        background: var(--card-bg-light);
-        border-radius: 20px;
-        padding: 1.5rem;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.03);
-        border: 1px solid var(--card-border-light);
+    .dashboard-heading h1 {
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: var(--text);
+        margin-bottom: 6px;
     }
-    
-    body.dark-mode .table-responsive {
-        background: var(--card-bg-dark);
-        border: 1px solid var(--card-border-dark);
+    .dashboard-heading p {
+        color: var(--muted);
+        font-size: 14px;
+        margin: 0;
     }
- 
-    .table {
-        color: var(--text-color-light);
-        margin-bottom: 0;
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 32px;
     }
-    
-    body.dark-mode .table {
-        color: var(--text-color-dark);
-        border-color: rgba(255,255,255,0.05);
+    .stat-box {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
     }
-    
-    .table th {
+    .stat-box.primary-stat {
+        border-color: var(--accent);
+        background: var(--soft);
+    }
+    .stat-label {
+        font-size: 12px;
         font-weight: 700;
         text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 1px;
-        color: #64748b;
-        border-bottom: 1px solid var(--card-border-light);
-        padding: 1rem 0.5rem;
+        letter-spacing: 0.5px;
+        color: var(--muted);
     }
-    
+    .stat-box.primary-stat .stat-label {
+        color: var(--accent);
+    }
+    .stat-number {
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--text);
+        line-height: 1.2;
+    }
+    .admin-table-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        margin-bottom: 32px;
+    }
+    .table {
+        margin: 0;
+        color: var(--text);
+        background: var(--surface);
+    }
+    .table th {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: var(--muted);
+        border-bottom: 1px solid var(--line);
+        background: var(--surface);
+        padding: 14px 16px;
+    }
     .table td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
         vertical-align: middle;
-        padding: 1.25rem 0.5rem;
-        border-bottom: 1px solid var(--card-border-light);
+        background: var(--surface);
+        color: var(--text);
     }
-    
-    body.dark-mode .table th, body.dark-mode .table td {
-        border-color: var(--card-border-dark);
-    }
-    
     .book-thumbnail {
-        width: 45px;
-        height: 60px;
+        width: 48px;
+        height: 64px;
         object-fit: cover;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-radius: 6px;
+        border: 1px solid var(--line);
     }
-    
-    .thumbnail-placeholder {
-        width: 45px;
-        height: 60px;
-        background: #f1f5f9;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #94a3b8;
-    }
-    
     .action-btn {
-        width: 38px;
-        height: 38px;
+        width: 36px;
+        height: 36px;
         padding: 0;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        border-radius: 12px;
-        margin: 0 2px;
-        transition: var(--transition-smooth);
-        border: 1px solid var(--card-border-light);
-        background: white;
-        color: #64748b;
+        border-radius: 6px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--text);
+        text-decoration: none;
     }
-    
     .action-btn:hover {
-        transform: translateY(-3px);
-        background: var(--bs-primary);
-        color: white;
-        border-color: var(--bs-primary);
-        box-shadow: 0 10px 20px rgba(15, 118, 110, 0.2);
+        border-color: var(--accent);
+        color: var(--accent);
     }
- 
     .status-badge {
-        padding: 6px 14px;
-        border-radius: 10px;
-        font-size: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11px;
         font-weight: 700;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+    }
+    @media (max-width: 992px) {
+        .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 576px) {
+        .stats-grid { grid-template-columns: 1fr; }
     }
 </style>
 @endsection
 
 @section('content')
 <div class="row">
-    <div class="col-12 fade-in-up">
-        
-        <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div class="col-12">
+        <div class="dashboard-heading">
             <div>
-                <h2 class="fw-bold mb-1">Manajemen Koleksi Buku</h2>
-                <p class="mb-0 text-muted">Akses cepat dan kelola seluruh koleksi perpustakaan.</p>
+                <h1>Manajemen Koleksi Buku</h1>
+                <p>Kelola dan pantau seluruh literatur dan referensi kesehatan digital.</p>
             </div>
-            <a href="{{ route('admin.books.create') }}" class="btn btn-primary d-flex align-items-center gap-2">
+            <a href="{{ route('admin.books.create') }}" class="primary" style="min-height: 44px; padding: 10px 20px;">
                 <i class="bi bi-plus-lg"></i>
                 <span>Tambah Buku Baru</span>
             </a>
         </div>
 
-        <div class="row g-4 mb-5">
-            <div class="col-md-3">
-                <div class="card p-4 h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #0f766e 0%, #115e59 100%); color: white;">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div class="p-3 bg-white bg-opacity-25 rounded-4 shadow-sm">
-                            <i class="bi bi-collection-fill fs-3 text-white"></i>
-                        </div>
-                    </div>
-                    <h6 class="text-white text-opacity-75 mb-1">Total Koleksi</h6>
-                    <h2 class="fw-bold mb-0">{{ $books->total() }}</h2>
-                </div>
+        <div class="stats-grid">
+            <div class="stat-box primary-stat">
+                <span class="stat-label">Total Koleksi</span>
+                <span class="stat-number">{{ $books->total() }}</span>
             </div>
-            <div class="col-md-3">
-                <div class="card p-4 h-100 border-0 shadow-sm">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div class="p-3 bg-primary bg-opacity-10 rounded-4 text-primary">
-                            <i class="bi bi-cloud-download fs-3"></i>
-                        </div>
-                    </div>
-                    <h6 class="text-muted mb-1">Total Unduhan</h6>
-                    <h2 class="fw-bold mb-0 text-dark">{{ $books->sum('download_count') }}</h2>
-                </div>
+            <div class="stat-box">
+                <span class="stat-label">Total Akses / Unduhan</span>
+                <span class="stat-number">{{ $books->sum('download_count') }}</span>
             </div>
-            <div class="col-md-3">
-                <div class="card p-4 h-100 border-0 shadow-sm">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div class="p-3 bg-warning bg-opacity-10 rounded-4 text-warning">
-                            <i class="bi bi-link-45deg fs-3"></i>
-                        </div>
-                    </div>
-                    <h6 class="text-muted mb-1">Buku Tautan</h6>
-                    <h2 class="fw-bold mb-0 text-dark">{{ $books->whereNotNull('external_link')->count() }}</h2>
-                </div>
+            <div class="stat-box">
+                <span class="stat-label">Dokumen PDF</span>
+                <span class="stat-number">{{ $books->whereNull('external_link')->count() }}</span>
             </div>
-            <div class="col-md-3">
-                <div class="card p-4 h-100 border-0 shadow-sm">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div class="p-3 bg-info bg-opacity-10 rounded-4 text-info">
-                            <i class="bi bi-file-pdf fs-3"></i>
-                        </div>
-                    </div>
-                    <h6 class="text-muted mb-1">Buku PDF</h6>
-                    <h2 class="fw-bold mb-0 text-dark">{{ $books->whereNull('external_link')->count() }}</h2>
-                </div>
+            <div class="stat-box">
+                <span class="stat-label">Tautan Eksternal</span>
+                <span class="stat-number">{{ $books->whereNotNull('external_link')->count() }}</span>
             </div>
         </div>
 
@@ -266,11 +263,7 @@
                     <div class="card-body p-0">
                         <div class="d-flex p-3">
                             <div class="flex-shrink-0 me-3">
-                                @if($book->cover_image)
-                                    <img src="{{ asset('uploads/books/' . $book->cover_image) }}" alt="Cover" class="rounded-3 shadow-sm" style="width: 70px; height: 100px; object-fit: cover;">
-                                @else
-                                    <img src="{{ asset('images/buku.png') }}" alt="Default Cover" class="rounded-3 shadow-sm" style="width: 70px; height: 100px; object-fit: contain; background: #f8fafc; padding: 5px;">
-                                @endif
+                                <img src="{{ $book->cover_url }}" alt="Cover" class="rounded-3 border" style="width: 70px; height: 100px; {{ $book->has_custom_cover ? 'object-fit: cover;' : 'object-fit: contain; background: var(--soft); padding: 4px;' }}">
                             </div>
                             <div class="flex-grow-1 min-width-0">
                                 <div class="d-flex justify-content-between align-items-start mb-1">

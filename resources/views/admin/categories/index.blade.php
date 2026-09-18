@@ -5,44 +5,54 @@
 @section('styles')
 <style>
     .category-card {
-        background: var(--card-bg-light);
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        border: 1px solid rgba(0,0,0,0.05);
-        transition: all 0.3s ease;
+        background: var(--surface);
+        border-radius: var(--radius);
+        padding: 20px;
+        border: 1px solid var(--line);
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-    }
-
-    body.dark-mode .category-card {
-        background: var(--card-bg-dark);
-        border: 1px solid rgba(255,255,255,0.05);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        transition: border-color var(--motion) ease;
     }
 
     .category-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        border-color: var(--accent);
     }
 
     .status-badge {
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
     }
 
     .status-active {
-        background-color: rgba(25, 135, 84, 0.1);
-        color: #198754;
+        background-color: #ecfdf5;
+        color: #065f46;
+        border: 1px solid #a7f3d0;
     }
 
     .status-hidden {
-        background-color: rgba(220, 53, 69, 0.1);
-        color: #dc3545;
+        background-color: #fef2f2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+    }
+
+    :root[data-theme="dark"] .status-active {
+        background-color: #064e3b;
+        color: #6ee7b7;
+        border-color: #047857;
+    }
+
+    :root[data-theme="dark"] .status-hidden {
+        background-color: #7f1d1d;
+        color: #fca5a5;
+        border-color: #991b1b;
     }
 </style>
 @endsection
@@ -54,8 +64,8 @@
         <p class="text-muted mb-0">Tambah, edit, atau sembunyikan kategori buku.</p>
     </div>
     <div class="col-md-6 text-md-end mt-3 mt-md-0">
-        <button class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-            <i class="bi bi-plus-lg me-2"></i> Tambah Kategori
+        <button class="primary" style="min-height: 44px; padding: 10px 20px;" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+            <i class="bi bi-plus-lg me-1"></i> Tambah Kategori
         </button>
     </div>
 </div>
@@ -75,13 +85,13 @@
                 </div>
                 
                 <div class="d-flex gap-2 mt-4">
-                    <button class="btn btn-sm btn-outline-secondary rounded-pill flex-grow-1" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $category->id }}">
+                    <button class="btn btn-sm btn-outline-secondary flex-grow-1" style="border-radius: 6px;" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $category->id }}">
                         <i class="bi bi-pencil me-1"></i> Edit
                     </button>
                     <form action="{{ route('admin.categories.toggle', $category->id) }}" method="POST" class="flex-grow-1">
                         @csrf
                         @method('PATCH')
-                        <button type="submit" class="btn btn-sm {{ $category->is_active ? 'btn-outline-danger' : 'btn-outline-success' }} rounded-pill w-100">
+                        <button type="submit" class="btn btn-sm {{ $category->is_active ? 'btn-outline-danger' : 'btn-outline-success' }} w-100" style="border-radius: 6px;">
                             <i class="bi {{ $category->is_active ? 'bi-eye-slash' : 'bi-eye' }} me-1"></i>
                             {{ $category->is_active ? 'Sembunyikan' : 'Tampilkan' }}
                         </button>
