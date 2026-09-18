@@ -295,7 +295,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-uppercase text-muted">Alamat Email</label>
-                            <input type="email" name="email" class="form-control" placeholder="contoh@rsbaladhikahusada.com" value="{{ old('email') }}" required style="border-radius: 8px;">
+                            <input type="email" name="email" class="form-control" placeholder="nama@email.com" value="{{ old('email') }}" required style="border-radius: 8px;">
                             <div class="form-text small text-danger mt-1">
                                 <i class="bi bi-info-circle me-1"></i>Email harus unik. Tidak boleh ada email yang sama yang didaftarkan ulang.
                             </div>

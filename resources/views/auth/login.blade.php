@@ -168,7 +168,7 @@
                        name="email" 
                        class="auth-input" 
                        value="{{ old('email') }}" 
-                       placeholder="rsbaladhikahusada@gmail.com"
+                       placeholder="nama@email.com"
                        required 
                        autocomplete="email" 
                        autofocus>
