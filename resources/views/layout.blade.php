@@ -374,13 +374,13 @@
                 </span>
             </a>
             <nav class="nav" aria-label="Navigasi utama">
-                <a class="{{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Beranda</a>
-                <a href="{{ route('home') }}#koleksi">Koleksi Pustaka</a>
+                <a class="{{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home', [], false) }}">Beranda</a>
+                <a href="{{ route('home', [], false) }}#koleksi">Koleksi Pustaka</a>
                 @auth
-                    <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
-                    <a class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}" href="{{ route('admin.categories.index') }}">Kategori</a>
-                    <a class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">Akun</a>
-                    <form action="{{ route('logout') }}" method="POST" class="d-inline ms-2">
+                    <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard', [], false) }}">Dashboard Admin</a>
+                    <a class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}" href="{{ route('admin.categories.index', [], false) }}">Kategori</a>
+                    <a class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index', [], false) }}">Akun</a>
+                    <form action="{{ route('logout', [], false) }}" method="POST" class="d-inline ms-2">
                         @csrf
                         <button type="submit" class="btn btn-sm btn-outline-danger" style="border-radius: 6px;">Keluar</button>
                     </form>
@@ -404,8 +404,8 @@
         @endif
         @if(session('error'))
             <div class="wrap my-3">
-                <div class="alert alert-danger alert-dismissible fade show mb-0" role="alert" style="border-radius: var(--radius);">
-                    <strong>Terjadi kesalahan:</strong> {{ session('error') }}
+                <div class="alert alert-danger alert-dismissible fade show mb-0" role="alert" style="border-radius: var(--radius); border-left: 4px solid #dc2626;">
+                    <strong>Pemberitahuan:</strong> {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>
@@ -416,16 +416,16 @@
 
     <!-- Mobile Bottom Navigation -->
     <nav class="mobile-bottom-bar" aria-label="Navigasi bawah seluler">
-        <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">
+        <a href="{{ route('home', [], false) }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">
             <svg aria-hidden="true"><use href="#book"/></svg>
             <span>Koleksi</span>
         </a>
-        <a href="{{ route('home') }}#pencarian">
+        <a href="{{ route('home', [], false) }}#pencarian">
             <svg aria-hidden="true"><use href="#search"/></svg>
             <span>Cari</span>
         </a>
         @auth
-            <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.dashboard', [], false) }}" class="{{ request()->routeIs('admin.*') ? 'active' : '' }}">
                 <svg aria-hidden="true"><use href="#file"/></svg>
                 <span>Admin</span>
             </a>
@@ -443,6 +443,9 @@
             <span>Ruang baca digital, akses pengetahuan lebih dekat.</span>
         </div>
     </footer>
+
+    <!-- Modals Container -->
+    @yield('modals')
 
     <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

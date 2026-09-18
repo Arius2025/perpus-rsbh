@@ -158,7 +158,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('authenticate') }}" class="auth-form">
+        <form method="POST" action="{{ route('authenticate', [], false) }}" class="auth-form">
             @csrf
 
             <div class="form-group">
@@ -168,7 +168,7 @@
                        name="email" 
                        class="auth-input" 
                        value="{{ old('email') }}" 
-                       placeholder="nama@rsbaladhikahusada.com"
+                       placeholder="rsbaladhikahusada@gmail.com"
                        required 
                        autocomplete="email" 
                        autofocus>

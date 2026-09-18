@@ -14,5 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (\Illuminate\Session\TokenMismatchException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Sesi telah kedaluwarsa. Silakan muat ulang halaman.'], 419);
+            }
+            return redirect()->route('login')->with('error', 'Sesi telah diperbarui demi keamanan. Silakan coba masuk kembali.');
+        });
     })->create();

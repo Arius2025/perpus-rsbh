@@ -7,14 +7,14 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 
 // Public Routes
-Route::get('/', [BookController::class, 'index'])->middleware('throttle:60,1')->name('home');
+Route::get('/', [BookController::class, 'index'])->name('home');
 Route::get('/books/{book}', [BookController::class, 'show'])->name('books.show');
 Route::get('/books/{book}/download', [BookController::class, 'download'])->name('books.download');
 Route::get('/books/{book}/view', [BookController::class, 'viewPdf'])->name('books.view');
 
 // Auth Routes
-Route::get('/login', [AuthController::class, 'login'])->middleware('throttle:10,1')->name('login');
-Route::post('/login', [AuthController::class, 'authenticate'])->middleware('throttle:5,1')->name('authenticate');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Admin Routes
