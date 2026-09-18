@@ -379,7 +379,9 @@
                 @auth
                     <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard', [], false) }}">Dashboard Admin</a>
                     <a class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}" href="{{ route('admin.categories.index', [], false) }}">Kategori</a>
-                    <a class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index', [], false) }}">Akun</a>
+                    @if(auth()->user()->isAdminUtama())
+                        <a class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index', [], false) }}">Kelola Akun</a>
+                    @endif
                     <form action="{{ route('logout', [], false) }}" method="POST" class="d-inline ms-2">
                         @csrf
                         <button type="submit" class="btn btn-sm btn-outline-danger" style="border-radius: 6px;">Keluar</button>

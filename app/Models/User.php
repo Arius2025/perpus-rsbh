@@ -30,9 +30,7 @@ class User extends Authenticatable
     public function isAdminUtama(): bool
     {
         return $this->role === 'admin_utama' 
-            || $this->email === 'rsbaladhikahusada@gmail.com' 
-            || $this->email === 'admin@pustaka.com'
-            || $this->id === 1;
+            || strtolower(trim((string)$this->email)) === 'rsbaladhikahusada@gmail.com';
     }
 
     /**

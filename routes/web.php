@@ -33,9 +33,10 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::patch('/categories/{category}/toggle', [CategoryController::class, 'toggleVisibility'])->name('categories.toggle');
 
-    // User Management
+    // User Management (Khusus Akun Utama)
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::post('/users', [UserController::class, 'store'])->name('users.store');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::patch('/users/{user}/toggle', [UserController::class, 'toggleStatus'])->name('users.toggle');
 });
