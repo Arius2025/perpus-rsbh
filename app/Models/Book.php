@@ -18,11 +18,17 @@ class Book extends Model
         'external_link',
         'download_count',
         'is_active',
+        'user_id',
     ];
 
     public function category_ref()
     {
         return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function uploader()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function getCoverUrlAttribute()

@@ -142,6 +142,17 @@
       width: min(1280px, calc(100% - 96px));
       margin: auto;
     }
+    .admin-wrap {
+      width: min(1200px, calc(100% - 64px));
+      margin-inline: auto;
+    }
+    @media (max-width: 768px) {
+      .admin-wrap { width: calc(100% - 32px); }
+    }
+    @media (max-width: 480px) {
+      .wrap { width: calc(100% - 24px); }
+      .admin-wrap { width: calc(100% - 20px); }
+    }
 
     /* Accessibility Skip Link */
     .skip {

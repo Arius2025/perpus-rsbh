@@ -58,54 +58,56 @@
 @endsection
 
 @section('content')
-<div class="row align-items-center mb-4">
-    <div class="col-md-6">
-        <h2 class="fw-bold mb-0">Manajemen Kategori</h2>
-        <p class="text-muted mb-0">Tambah, edit, atau sembunyikan kategori buku.</p>
+<div class="wrap admin-wrap py-4">
+    <div class="row align-items-center mb-4">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-0">Manajemen Kategori</h2>
+            <p class="text-muted mb-0">Tambah, edit, atau sembunyikan kategori buku.</p>
+        </div>
+        <div class="col-md-6 text-md-end mt-3 mt-md-0">
+            <button class="primary" style="min-height: 44px; padding: 10px 20px;" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                <i class="bi bi-plus-lg me-1"></i> Tambah Kategori
+            </button>
+        </div>
     </div>
-    <div class="col-md-6 text-md-end mt-3 mt-md-0">
-        <button class="primary" style="min-height: 44px; padding: 10px 20px;" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-            <i class="bi bi-plus-lg me-1"></i> Tambah Kategori
-        </button>
-    </div>
-</div>
 
-<div class="row g-4">
-    @forelse($categories as $category)
-        <div class="col-md-4 col-sm-6">
-            <div class="category-card">
-                <div>
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h5 class="fw-bold mb-0">{{ $category->name }}</h5>
-                        <span class="status-badge {{ $category->is_active ? 'status-active' : 'status-hidden' }}">
-                            {{ $category->is_active ? 'Aktif' : 'Tersembunyi' }}
-                        </span>
+    <div class="row g-4">
+        @forelse($categories as $category)
+            <div class="col-md-4 col-sm-6">
+                <div class="category-card">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="fw-bold mb-0">{{ $category->name }}</h5>
+                            <span class="status-badge {{ $category->is_active ? 'status-active' : 'status-hidden' }}">
+                                {{ $category->is_active ? 'Aktif' : 'Tersembunyi' }}
+                            </span>
+                        </div>
+                        <p class="small text-muted mb-0">{{ $category->books_count ?? $category->books()->count() }} Buku</p>
                     </div>
-                    <p class="small text-muted mb-0">{{ $category->books_count ?? $category->books()->count() }} Buku</p>
-                </div>
-                
-                <div class="d-flex gap-2 mt-4">
-                    <button class="btn btn-sm btn-outline-secondary flex-grow-1" style="border-radius: 6px;" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $category->id }}">
-                        <i class="bi bi-pencil me-1"></i> Edit
-                    </button>
-                    <form action="{{ route('admin.categories.toggle', $category->id) }}" method="POST" class="flex-grow-1">
-                        @csrf
-                        @method('PATCH')
-                        <button type="submit" class="btn btn-sm {{ $category->is_active ? 'btn-outline-danger' : 'btn-outline-success' }} w-100" style="border-radius: 6px;">
-                            <i class="bi {{ $category->is_active ? 'bi-eye-slash' : 'bi-eye' }} me-1"></i>
-                            {{ $category->is_active ? 'Sembunyikan' : 'Tampilkan' }}
+                    
+                    <div class="d-flex gap-2 mt-4">
+                        <button class="btn btn-sm btn-outline-secondary flex-grow-1" style="border-radius: 6px; min-height: 40px;" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $category->id }}">
+                            <i class="bi bi-pencil me-1"></i> Edit
                         </button>
-                    </form>
+                        <form action="{{ route('admin.categories.toggle', $category->id) }}" method="POST" class="flex-grow-1">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="btn btn-sm {{ $category->is_active ? 'btn-outline-danger' : 'btn-outline-success' }} w-100" style="border-radius: 6px; min-height: 40px;">
+                                <i class="bi {{ $category->is_active ? 'bi-eye-slash' : 'bi-eye' }} me-1"></i>
+                                {{ $category->is_active ? 'Sembunyikan' : 'Tampilkan' }}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
 
-@empty
-        <div class="col-12 text-center py-5">
-            <i class="bi bi-tag fs-1 text-muted d-block mb-3"></i>
-            <h5 class="text-muted">Belum ada kategori.</h5>
-        </div>
-    @endforelse
+        @empty
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-tag fs-1 text-muted d-block mb-3"></i>
+                <h5 class="text-muted">Belum ada kategori.</h5>
+            </div>
+        @endforelse
+    </div>
 </div>
 @endsection
 

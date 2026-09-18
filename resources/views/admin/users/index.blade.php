@@ -36,7 +36,7 @@
 @endsection
 
 @section('content')
-<div class="container-fluid pb-5">
+<div class="wrap admin-wrap py-4">
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <div>
             <h2 class="fw-bold mb-0">Manajemen Akun</h2>

@@ -21,7 +21,30 @@ class User extends Authenticatable
         'email',
         'password',
         'is_active',
+        'role',
     ];
+
+    /**
+     * Check if user is Admin Utama (Superadmin).
+     */
+    public function isAdminUtama(): bool
+    {
+        return $this->role === 'admin_utama' || $this->id === 1;
+    }
+
+    /**
+     * Determine if the user can manage (update/delete) the given book.
+     */
+    public function canManageBook(?Book $book): bool
+    {
+        if (!$book) {
+            return false;
+        }
+        if ($this->isAdminUtama()) {
+            return true;
+        }
+        return $book->user_id !== null && $book->user_id === $this->id;
+    }
 
     /**
      * The attributes that should be hidden for serialization.

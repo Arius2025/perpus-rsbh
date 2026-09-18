@@ -51,6 +51,7 @@ class BookController extends Controller
         if (!$book->is_active && !auth()->check()) {
             abort(404);
         }
+        $book->load(['category_ref', 'uploader']);
         return view('show', compact('book'));
     }
 
@@ -100,7 +101,7 @@ class BookController extends Controller
     // --- Admin CRUD Methods ---
     public function dashboard()
     {
-        $books = Book::with('category_ref')->latest()->paginate(20);
+        $books = Book::with(['category_ref', 'uploader'])->latest()->paginate(20);
         return view('admin.dashboard', compact('books'));
     }
 
@@ -140,18 +141,29 @@ class BookController extends Controller
             $validated['pdf_file'] = $pdfFile;
         }
 
+        // Record the uploader
+        $validated['user_id'] = auth()->id();
+
         Book::create($validated);
         return redirect()->route('admin.dashboard')->with('success', 'Buku berhasil ditambahkan.');
     }
 
     public function edit(Book $book)
     {
+        if (!auth()->user()->canManageBook($book)) {
+            abort(403, 'Akses ditolak. Anda hanya dapat mengedit buku yang Anda unggah sendiri kecuali Admin Utama.');
+        }
+
         $categories = Category::where('is_active', true)->get();
         return view('admin.edit', compact('book', 'categories'));
     }
 
     public function update(Request $request, Book $book)
     {
+        if (!auth()->user()->canManageBook($book)) {
+            abort(403, 'Akses ditolak. Anda hanya dapat mengubah buku yang Anda unggah sendiri kecuali Admin Utama.');
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
@@ -189,8 +201,30 @@ class BookController extends Controller
 
     public function toggleVisibility(Book $book)
     {
+        if (!auth()->user()->canManageBook($book)) {
+            abort(403, 'Akses ditolak. Anda hanya dapat mengubah status buku yang Anda unggah sendiri kecuali Admin Utama.');
+        }
+
         $book->update(['is_active' => !$book->is_active]);
         $status = $book->is_active ? 'ditampilkan' : 'disembunyikan';
         return redirect()->back()->with('success', "Buku berhasil {$status}.");
+    }
+
+    public function destroy(Book $book)
+    {
+        if (!auth()->user()->canManageBook($book)) {
+            abort(403, 'Akses ditolak. Anda hanya dapat menghapus buku yang Anda unggah sendiri kecuali Admin Utama.');
+        }
+
+        $uploadPath = public_path('uploads/books');
+        if ($book->cover_image && File::exists($uploadPath . '/' . $book->cover_image)) {
+            File::delete($uploadPath . '/' . $book->cover_image);
+        }
+        if ($book->pdf_file && File::exists($uploadPath . '/' . $book->pdf_file)) {
+            File::delete($uploadPath . '/' . $book->pdf_file);
+        }
+
+        $book->delete();
+        return redirect()->route('admin.dashboard')->with('success', 'Buku berhasil dihapus secara permanen.');
     }
 }

@@ -135,11 +135,13 @@
         transition: all 0.2s;
     }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
 @endsection
 
 @section('content')
+<div class="wrap admin-wrap py-4">
 <div class="row justify-content-center">
-    <div class="col-xl-9 col-lg-10 fade-in-up">
+    <div class="col-xl-10 col-lg-11 fade-in-up">
         
         <div class="d-flex align-items-center mb-4">
             <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-light rounded-circle me-3" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
@@ -265,11 +267,40 @@
         </div>
     </div>
 </div>
+</div>
 @endsection
 
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Initialize TinyMCE Word-like Editor
+        if (typeof tinymce !== 'undefined') {
+            tinymce.init({
+                selector: '#description',
+                height: 420,
+                menubar: 'file edit view insert format tools table help',
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                    'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                ],
+                toolbar: 'undo redo | fontfamily fontsize | ' +
+                         'bold italic underline strikethrough | forecolor backcolor | ' +
+                         'alignleft aligncenter alignright alignjustify | ' +
+                         'bullist numlist outdent indent | removeformat | table link code fullscreen',
+                font_size_formats: '9pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 20pt 24pt 32pt 36pt',
+                font_family_formats: 'Jakarta=Jakarta, Segoe UI, sans-serif; Arial=arial,helvetica,sans-serif; Times New Roman=times new roman,times,serif; Georgia=georgia,palatino,serif; Courier New=courier new,courier,monospace; Trebuchet MS=trebuchet ms,geneva,sans-serif; Verdana=verdana,geneva,sans-serif; Tahoma=tahoma,arial,helvetica,sans-serif',
+                content_style: 'body { font-family: Jakarta, Segoe UI, sans-serif; font-size: 15px; line-height: 1.7; color: #1e293b; padding: 12px; }',
+                branding: false,
+                promotion: false,
+                setup: function (editor) {
+                    editor.on('change keyup', function () {
+                        editor.save();
+                    });
+                }
+            });
+        }
+
         // Handle Source Toggle
         const sourcePdf = document.getElementById('source_pdf');
         const sourceLink = document.getElementById('source_link');
